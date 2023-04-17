@@ -76,18 +76,23 @@ function createTable(matrix) {
 }
 
 
-
-function createTable2(matriz) {
+//Función que ejecuta un simulador del enfoque uniprogramación
+function uniprogramming(matriz) {
   times.innerHTML = '';
   casos.innerHTML = '';
+  //Variables de uso general
   var a=0;
   var cont=0;
   var cpu = 0;
   var io = 0;
+
+  //Ajustes css a los componentes de la tabla
   idRow.style.width ='40px';
   idRow.style.textAlign = 'center';
   idRow.innerHTML += 'Id';
   times.appendChild(idRow);
+
+  //Se usa un ciclo for para generar el encabezado de la tabla
   for(let i=0;i<localStorage.getItem("suma");i++){
     const row = document.createElement('th');
     row.style.width = '40px';
@@ -96,6 +101,7 @@ function createTable2(matriz) {
     times.appendChild(row);
   }
   
+  //Se usa un ciclo for para generar las filas y columnas requeridas
   for(let i=0; i < matriz.length; i++){
 
     const newRow = document.createElement('tr');
@@ -105,11 +111,14 @@ function createTable2(matriz) {
     const idColumn = document.createElement('td');
     idColumn.style.width ='40px';
     idColumn.style.textAlign = 'center';
-    idColumn.innerHTML += ''+Number(matriz[i][a]);
 
+    //Se asigna el ID del número de los procesos a realizar
+    idColumn.innerHTML += ''+Number(matriz[i][a]);
     newRow.appendChild(idColumn);
     
+    //Validación de más de 1 proceso
     if(i>0){
+      //Ciclo for que pinta los espacio donde el CPU está en ocio antes de iniciar el proceso
       for(let j = 1; j <= cont ; j++)
       {
           const column3 = document.createElement('td');
@@ -117,24 +126,28 @@ function createTable2(matriz) {
           newRow.appendChild(column3);
       }
      }
+
+    //Se usa ciclo for para pintar las celdas correspondientes al CPU time y i/o time
     for(cpu;cpu<Number(matriz[i][a+1]);cpu++){
       const column1 = document.createElement('td');
       column1.style.backgroundColor = "green";
       newRow.appendChild(column1);
-      
-      if(io<Number(matriz[i][a+2])){
-        
-        for(io;io < Number(matriz[i][a+2]);io++)
+    for(io;io < Number(matriz[i][a+2]);io++)
         {
           const column2 = document.createElement('td');
           column2.style.backgroundColor = "gainsboro";
           newRow.appendChild(column2);
         }
-      }
+      
     }
+
+    //Se usa una variable que funciona como contador
+    //Esto nos facilita la ubicación dentro de la tabla
     cont += Number(matriz[i][a+1]) + Number(matriz[i][a+2]);
     
+    //Validación de finalización del proceso
     if(cpu==Number(matriz[i][a+1])){
+      //Ciclo for que pinta los espacios donde el CPU se encuentra en ocio después de finalizar el proceso
       for(let b = cont;b<localStorage.getItem("suma");b++)
       {
         const column4 = document.createElement('td');
@@ -142,11 +155,12 @@ function createTable2(matriz) {
         newRow.appendChild(column4);
       }
     }
+
+    //Reinicio de variables generales
     cpu=0;
     io=0;
     casos.appendChild(newRow);
   }
-  console.log(cont);
 }
 
 
@@ -155,7 +169,7 @@ btnUni.addEventListener("click", function () {
     const textoParrafo = document.createTextNode("A table for Uniprogramming is printed below.");
     nuevoParrafo.appendChild(textoParrafo);
     contenedorUni.appendChild(nuevoParrafo);  
-    createTable2(matrizDatos);
+    uniprogramming(matrizDatos);
 });
 
 btnMulti.addEventListener("click", function () {
