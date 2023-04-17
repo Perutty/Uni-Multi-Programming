@@ -10,8 +10,18 @@ const contenedorUni = document.getElementById("contenedorUni");
 const contenedorMulti = document.getElementById("contenedorMulti");
 const times = document.querySelector('#times');
 const casos = document.querySelector('#tabla2 tbody');
+const operation = document.querySelector('#operation');
+
 //Matriz que contendrá los datos leídos en los input-text
 let matrizDatos=[];
+
+//Matriz que contendrá los datos de CPU Time
+let cpuTime = [];
+
+//Matriz que contendrá los datos de CPU Time
+let timesOperation = [];
+
+
 const idRow = document.createElement('th');
 
 btnAgregar.addEventListener("click", function () {
@@ -85,6 +95,8 @@ function uniprogramming(matriz) {
   var cont=0;
   var cpu = 0;
   var io = 0;
+  var sumaCpu = 0;
+  var cpuUtilizacion = 0;
 
   //Ajustes css a los componentes de la tabla
   idRow.style.width ='40px';
@@ -119,8 +131,7 @@ function uniprogramming(matriz) {
     //Validación de más de 1 proceso
     if(i>0){
       //Ciclo for que pinta los espacio donde el CPU está en ocio antes de iniciar el proceso
-      for(let j = 1; j <= cont ; j++)
-      {
+      for(let j = 1; j <= cont ; j++){
           const column3 = document.createElement('td');
           column3.style.backgroundColor = "gray";
           newRow.appendChild(column3);
@@ -132,15 +143,15 @@ function uniprogramming(matriz) {
       const column1 = document.createElement('td');
       column1.style.backgroundColor = "green";
       newRow.appendChild(column1);
-    for(io;io < Number(matriz[i][a+2]);io++)
-        {
-          const column2 = document.createElement('td');
-          column2.style.backgroundColor = "gainsboro";
-          newRow.appendChild(column2);
-        }
-      
+      for(io;io < Number(matriz[i][a+2]);io++){
+        const column2 = document.createElement('td');
+        column2.style.backgroundColor = "khaki";
+        newRow.appendChild(column2);
+      }
     }
-
+    //Agrega al arreglo los valores del cpu time
+    cpuTime.push(Number(matriz[i][a+1]));
+    
     //Se usa una variable que funciona como contador
     //Esto nos facilita la ubicación dentro de la tabla
     cont += Number(matriz[i][a+1]) + Number(matriz[i][a+2]);
@@ -148,24 +159,38 @@ function uniprogramming(matriz) {
     //Validación de finalización del proceso
     if(cpu==Number(matriz[i][a+1])){
       //Ciclo for que pinta los espacios donde el CPU se encuentra en ocio después de finalizar el proceso
-      for(let b = cont;b<localStorage.getItem("suma");b++)
-      {
+      for(let b = cont;b<localStorage.getItem("suma");b++){
         const column4 = document.createElement('td');
         column4.style.backgroundColor = "gray";
         newRow.appendChild(column4);
       }
     }
 
+    //Agrega al arreglo los valores del i/o times
+    timesOperation.push(matriz[i][a+2]);
+
     //Reinicio de variables generales
     cpu=0;
     io=0;
     casos.appendChild(newRow);
   }
+  //Agrega al arreglo los valores del arreglo que contiene los cpu times
+  timesOperation.push(cpuTime);
+
+  //For que realiza la suma de los cpu times
+  for(let c = 0;c<cpuTime.length;c++){
+    sumaCpu += Number(cpuTime[c]); 
+  }
+  //Operation para hallar el porcentaje de utilización de cpu
+  cpuUtilizacion = (sumaCpu / localStorage.getItem("suma"))*100;  
+  operation.style.textAlign = 'center';
+  operation.innerHTML += 'CPU Utilization = '+cpuTime+' / '+timesOperation+' = '+sumaCpu+' / '+localStorage.getItem("suma")+' = '+cpuUtilizacion+' %';
 }
 
 
 btnUni.addEventListener("click", function () {
      const nuevoParrafo = document.createElement("p");
+     nuevoParrafo.style.textAlign = 'center';
     const textoParrafo = document.createTextNode("A table for Uniprogramming is printed below.");
     nuevoParrafo.appendChild(textoParrafo);
     contenedorUni.appendChild(nuevoParrafo);  
