@@ -8,6 +8,7 @@ const btnAgregar = document.getElementById("btnAgregar");
 const contenedorCampos = document.getElementById("contenedorCampos");
 const contenedorUni = document.getElementById("contenedorUni");
 const contenedorMulti = document.getElementById("contenedorMulti");
+const aviso = document.querySelector('#aviso');
 const times = document.querySelector('#times');
 const casos = document.querySelector('#tabla2 tbody');
 const operation = document.querySelector('#operation');
@@ -104,6 +105,7 @@ function uniprogramming(matriz) {
   cpuTime.length = 0;
   timesOperation.length = 0;
   contenedorMulti.innerHTML='';
+  aviso.innerHTML='';
   //Variables de uso específico
   var a=0;
   var cont=0;
@@ -354,19 +356,53 @@ function multiprogramming(matriz){
 
 
 btnUni.addEventListener("click", function () {
-     const nuevoParrafo = document.createElement("p");
-     nuevoParrafo.style.textAlign = 'center';
-    const textoParrafo = document.createTextNode("A table for Uniprogramming is printed below.");
-    nuevoParrafo.appendChild(textoParrafo);
-    contenedorUni.appendChild(nuevoParrafo);
-    uniprogramming(matrizDatos);
-});
+
+  let verificarCpu = [];
+  const nuevoParrafo = document.createElement("p");
+    for(let i = 0; i<matrizDatos.length;i++)
+    {
+      if(Number(matrizDatos[i][1])==1){
+      verificarCpu.push(Number(matrizDatos[i][1]));
+      }
+    }
+    if(verificarCpu.pop() == 1){
+      nuevoParrafo.style.textAlign = 'center';
+      aviso.innerHTML='';
+      const error = document.createTextNode("¡Aviso! Los tiempos de CPU para uniprogramación deben ser mayores que 1");
+      nuevoParrafo.appendChild(error);
+      aviso.appendChild(nuevoParrafo);
+    }
+    else {
+      nuevoParrafo.style.textAlign = 'center';
+      const textoParrafo = document.createTextNode("A table for Uniprogramming is printed below.");
+      nuevoParrafo.appendChild(textoParrafo);
+      contenedorUni.appendChild(nuevoParrafo);
+      uniprogramming(matrizDatos);
+    }
+  });
 
 btnMulti.addEventListener("click", function () {
-     const nuevoParrafo = document.createElement("p");
-     nuevoParrafo.style.textAlign ="center";
-    const textoParrafo = document.createTextNode("A table for Multiprogramming is printed below.");
-    nuevoParrafo.appendChild(textoParrafo);
-    contenedorMulti.appendChild(nuevoParrafo);
-    multiprogramming(matrizDatos);
+
+    let verificarCpu = [];
+    const nuevoParrafo = document.createElement("p");
+    for(let i = 0; i<matrizDatos.length;i++)
+    {
+      if(Number(matrizDatos[i][1])==1){
+      verificarCpu.push(Number(matrizDatos[i][1]));
+      }
+    }
+    if(verificarCpu.pop() == 1){
+      nuevoParrafo.style.textAlign = 'center';
+      aviso.innerHTML='';
+      const error = document.createTextNode("¡Aviso! Los tiempos de CPU para multiprogramación deben ser mayores que 1");
+      nuevoParrafo.appendChild(error);
+      aviso.appendChild(nuevoParrafo);
+    }
+    else{
+      nuevoParrafo.style.textAlign ="center";
+      const textoParrafo = document.createTextNode("A table for Multiprogramming is printed below.");
+      nuevoParrafo.appendChild(textoParrafo);
+      contenedorMulti.appendChild(nuevoParrafo);
+      multiprogramming(matrizDatos);
+    }
 });
