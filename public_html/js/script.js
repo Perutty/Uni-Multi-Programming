@@ -357,7 +357,7 @@ btnUni.addEventListener("click", function () {
     if(verificarCpu.pop() == 1){
       nuevoParrafo.style.textAlign = 'center';
       aviso.innerHTML='';
-      const error = document.createTextNode("¡Aviso! Los tiempos de CPU para uniprogramación deben ser mayores que 1");
+      const error = document.createTextNode("¡Warning! CPU times for uniprogramming must be greater than 1");
       nuevoParrafo.appendChild(error);
       aviso.appendChild(nuevoParrafo);
     }
@@ -386,7 +386,7 @@ btnMulti.addEventListener("click", function () {
     if(verificarCpu.pop() == 1){
       nuevoParrafo.style.textAlign = 'center';
       aviso.innerHTML='';
-      const error = document.createTextNode("¡Aviso! Los tiempos de CPU para multiprogramación deben ser mayores que 1");
+      const error = document.createTextNode("¡Warning! CPU times for multiprogramming must be greater than 1");
       nuevoParrafo.appendChild(error);
       aviso.appendChild(nuevoParrafo);
     }
