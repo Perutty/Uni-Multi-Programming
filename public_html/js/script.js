@@ -2,8 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
-
-
 const btnAgregar = document.getElementById("btnAgregar");
 const contenedorCampos = document.getElementById("contenedorCampos");
 const contenedorUni = document.getElementById("contenedorUni");
@@ -21,7 +19,6 @@ let cpuTime = [];
 
 //Matriz que contendrá los datos de CPU Time
 let timesOperation = [];
-
 
 const idRow = document.createElement('th');
 
@@ -48,16 +45,13 @@ btnAgregar.addEventListener("click", function () {
                 case 3: m="Input I/O Time";
                 break;
     }
-    
     inputCampo.placeholder=m;
     divCampos.appendChild(inputCampo);
   }
-
   contenedorCampos.appendChild(divCampos);
 });
 
 localStorage.removeItem("suma");
-
 
 btnLeer.addEventListener("click", function () {
   const camposTexto = document.querySelectorAll("input[type=text]");
@@ -77,14 +71,12 @@ btnLeer.addEventListener("click", function () {
       suma2 += Number(matrizDatos[i][j+1]) + Number(matrizDatos[i][j+2]);
   }
   suma += Number(matrizDatos[matrizDatos.length-1][2]);
-
   localStorage.setItem("suma",suma);
   localStorage.setItem("suma2", suma2);
   window.alert("The data read dynamically in the input-text is loaded into an array named matrizDatos of size nx3. \n You can use this array to solve your requirements. ");
   console.log(matrizDatos);
   console.log(suma);
   createTable(matrizDatos);
-
 });
 
 function createTable(matrix) {
@@ -96,7 +88,6 @@ function createTable(matrix) {
   document.getElementById('tabla').innerHTML = table;
 }
 
-
 //Función que ejecuta un simulador del enfoque uniprogramación
 function uniprogramming(matriz) {
   times.innerHTML = '';
@@ -106,6 +97,7 @@ function uniprogramming(matriz) {
   timesOperation.length = 0;
   contenedorMulti.innerHTML='';
   aviso.innerHTML='';
+
   //Variables de uso específico
   var a=0;
   var cont=0;
@@ -135,7 +127,6 @@ function uniprogramming(matriz) {
     const newRow = document.createElement('tr');
     newRow.style.width = '40px';
     newRow.style.textAlign = 'center';
-
     const idColumn = document.createElement('td');
     idColumn.style.width ='40px';
     idColumn.style.textAlign = 'center';
@@ -205,7 +196,6 @@ function uniprogramming(matriz) {
   operation.innerHTML += 'CPU Utilization = '+cpuTime.join(' + ')+' / '+timesOperation.join(' + ')+' = '+sumaCpu+' / '+localStorage.getItem("suma2")+' = '+cpuUtilizacion+' %';
 }
 
-
 //Función que ejecuta un simulador del enfoque multiprogramación
 function multiprogramming(matriz){
   times.innerHTML = '';
@@ -214,6 +204,7 @@ function multiprogramming(matriz){
   cpuTime.length = 0;
   timesOperation.length = 0;
   contenedorUni.innerHTML='';
+
   //Variables de uso específico
   var a=0;
   var cont2 = 0;
@@ -244,7 +235,6 @@ function multiprogramming(matriz){
     const newRow = document.createElement('tr');
     newRow.style.width = '40px';
     newRow.style.textAlign = 'center';
-
     const idColumn = document.createElement('td');
     idColumn.style.width ='40px';
     idColumn.style.textAlign = 'center';
@@ -252,7 +242,6 @@ function multiprogramming(matriz){
     //Se asigna el ID del número de los procesos a realizar
     idColumn.innerHTML += ''+Number(matriz[i][a]);
     newRow.appendChild(idColumn);
-    
     
     //Validación de primer caso
     if(i==0){
@@ -279,6 +268,7 @@ function multiprogramming(matriz){
           cont2=i;
       }
 
+      //"Ciclo for que valida si en la linea anterior se cruza un cpu time" 
       for(cpu; cpu < Number(matriz[i][a+1]); cpu++){
         const column1 = document.createElement('td');
         column1.style.backgroundColor = "green";
@@ -311,13 +301,13 @@ function multiprogramming(matriz){
         }
      }
     }
-    console.log(cont2);
 
     //Agrega al arreglo los valores del cpu time
     cpuTime.push(Number(matriz[i][a+1]));
     
     //Validación de finalización del proceso
     if(cpu==Number(matriz[i][a+1])){
+
       //Ciclo for que pinta los espacios donde el CPU se encuentra en ocio después de finalizar el proceso
       for(let b = (Number(matriz[i][a+1]) + Number(matriz[i][a+2]))+cont2; b < localStorage.getItem("suma");b++){
         const column4 = document.createElement('td');
@@ -329,7 +319,7 @@ function multiprogramming(matriz){
     //Agrega al arreglo los valores del i/o times
     timesOperation.push(matriz[i][a+2]);
 
-    //Reinicio de variables generales4
+    //Reinicio de variables específicas
     aux=0;
     cpu=0;
     cont2=0;
@@ -349,22 +339,21 @@ function multiprogramming(matriz){
 
   //Muestra la gráfica de CPU Utilización
   operation.innerHTML += 'CPU Utilization = '+cpuTime.join(' + ')+' / '+timesOperation.join(' + ')+' = '+sumaCpu+' / '+localStorage.getItem("suma")+' = '+cpuUtilizacion+' %';
-
 }
-
-
-
 
 btnUni.addEventListener("click", function () {
 
   let verificarCpu = [];
   const nuevoParrafo = document.createElement("p");
-    for(let i = 0; i<matrizDatos.length;i++)
-    {
+
+    //Ciclo for para obtener los cputime de la matríz
+    for(let i = 0; i<matrizDatos.length;i++){
       if(Number(matrizDatos[i][1])==1){
       verificarCpu.push(Number(matrizDatos[i][1]));
       }
     }
+
+    //Se valida si en la columna de cputime hay un valor igual a 1 (la cual es incorrecto)
     if(verificarCpu.pop() == 1){
       nuevoParrafo.style.textAlign = 'center';
       aviso.innerHTML='';
@@ -385,12 +374,15 @@ btnMulti.addEventListener("click", function () {
 
     let verificarCpu = [];
     const nuevoParrafo = document.createElement("p");
-    for(let i = 0; i<matrizDatos.length;i++)
-    {
+
+    //Ciclo for para obtener los cputime de la matríz
+    for(let i = 0; i<matrizDatos.length;i++){
       if(Number(matrizDatos[i][1])==1){
       verificarCpu.push(Number(matrizDatos[i][1]));
       }
     }
+
+    //Se valida si en la columna de cputime hay un valor igual a 1 (la cual es incorrecto)
     if(verificarCpu.pop() == 1){
       nuevoParrafo.style.textAlign = 'center';
       aviso.innerHTML='';
